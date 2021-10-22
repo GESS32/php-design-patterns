@@ -1,0 +1,30 @@
+{
+  "name": "uncle/patterns",
+  "type": "project",
+  "description": "The Uncle patterns realization.",
+  "keywords": [
+    "patterns",
+    "uncle"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.4"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "State\\": "State/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

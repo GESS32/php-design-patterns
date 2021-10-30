@@ -13,17 +13,22 @@ use ChainOfResponsibility\ViewModels\UserViewModel;
 
 class ToViewModelFacade
 {
+    protected ToViewModelHandler $handler;
     protected array $chainMap = [
         isViewModel::class => EntityToViewModel::class,
         EntityToViewModel::class => ObjectToViewModel::class,
         ObjectToViewModel::class => ArrayToViewModel::class,
     ];
 
-    public function handle($data): ?UserViewModel
+    public function __construct()
     {
         $handlerClass = array_key_first($this->chainMap);
+        $this->handler = $this->buildChain(new $handlerClass());
+    }
 
-        return $this->buildChain(new $handlerClass())->handle($data);
+    public function handle($data): ?UserViewModel
+    {
+        return $this->handler->handle($data);
     }
 
     protected function buildChain(ToViewModelHandler $handler): ToViewModelHandler

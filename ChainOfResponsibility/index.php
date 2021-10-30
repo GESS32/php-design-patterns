@@ -10,7 +10,9 @@ use ChainOfResponsibility\ViewModels\UserViewModel;
 
 function showResult(?UserViewModel $viewModel, $data)
 {
+    echo 'input data: <br>';
     var_dump($data);
+    echo '<br>';
     if (is_null($viewModel)) {
         echo '<< Has not result >><br>';
     } else {

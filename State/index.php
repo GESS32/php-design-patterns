@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
-use State\Entities\BookingEntity;
+use State\Entities\Booking;
+use State\EnumObjects\BookingStatus;
 use State\Enums\BookingStatusEnum;
 use State\Factories\BookingStateFactory;
-use State\Services\BookingUpdateStatus;
+use State\Mappings\BookingStatusStateMapping;
+use State\Services\BookingService;
 
 /**
  * Some conditional event...
@@ -17,14 +19,15 @@ function isYourDay(): bool
     return (bool) random_int(0, 1);
 }
 
-$entity = new BookingEntity();
+$entity = new Booking();
+$stateMapping = new BookingStatusStateMapping();
 
-$pendingEnum = new BookingStatusEnum(BookingStatusEnum::PENDING);
-$paidEnum = new BookingStatusEnum(BookingStatusEnum::PAID);
-$failedEnum = new BookingStatusEnum(BookingStatusEnum::FAILED);
-$refundedEnum = new BookingStatusEnum(BookingStatusEnum::REFUNDED);
+$pendingStatus = new BookingStatus(BookingStatusEnum::PAYMENT_PENDING);
+$paidStatus = new BookingStatus(BookingStatusEnum::PAID);
+$failedStatus = new BookingStatus(BookingStatusEnum::FAILED);
+$refundedStatus = new BookingStatus(BookingStatusEnum::REFUNDED);
 
-$service = new BookingUpdateStatus(BookingStateFactory::make($pendingEnum), $entity);
+$service = new BookingUpdateStatus(BookingStateFactory::make($pendingStatus, $stateMapping), $entity);
 $service->updateBookingEntityState();
 var_dump($entity);
 $service->showCurrentStateInfo();
@@ -33,12 +36,12 @@ if (isYourDay()) {
     $entity->hasTransaction = true;
 }
 
-$service->transitionTo(BookingStateFactory::make($paidEnum));
+$service->transitionStateTo(BookingStateFactory::make($paidStatus));
 $service->updateBookingEntityState();
 var_dump($entity);
 $service->showCurrentStateInfo();
 
-$service->transitionTo(BookingStateFactory::make($refundedEnum));
+$service->transitionStateTo(BookingStateFactory::make($refundedStatus));
 $service->updateBookingEntityState();
 var_dump($entity);
 $service->showCurrentStateInfo();

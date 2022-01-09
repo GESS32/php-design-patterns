@@ -7,7 +7,7 @@ namespace State\States;
 use app\Response;
 use State\Enums\BookingStatusEnum;
 
-final class BookingRefund extends AbstractBookingState
+class BookingClosed extends AbstractBookingState
 {
     public function rollbackStatus(): Response
     {
@@ -25,11 +25,13 @@ final class BookingRefund extends AbstractBookingState
 
     public function preparePayRequest(): Response
     {
-        // TODO: Implement preparePayRequest() method.
+        $this->rollbackStatus();
+
+        return $this->context->getPayRoute();
     }
 
     protected function getStatusValue(): int
     {
-        return BookingStatusEnum::REFUNDED;
+        return BookingStatusEnum::CLOSED;
     }
 }

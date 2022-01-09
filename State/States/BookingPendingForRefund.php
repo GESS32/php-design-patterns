@@ -7,11 +7,11 @@ namespace State\States;
 use app\Response;
 use State\Enums\BookingStatusEnum;
 
-final class BookingRefund extends AbstractBookingState
+final class BookingPendingForRefund extends AbstractBookingState
 {
     public function rollbackStatus(): Response
     {
-        $pendingState = new BookingPendingForPayment($this->context);
+        $pendingState = new BookingPaid($this->context);
 
         $this->context->transitionStateTo($pendingState);
 
@@ -30,6 +30,6 @@ final class BookingRefund extends AbstractBookingState
 
     protected function getStatusValue(): int
     {
-        return BookingStatusEnum::REFUNDED;
+        return BookingStatusEnum::REFUND_PENDING;
     }
 }

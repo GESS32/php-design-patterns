@@ -23,7 +23,8 @@
   "autoload": {
     "psr-4": {
       "State\\": "State/",
-      "ChainOfResponsibility\\": "ChainOfResponsibility/"
+      "ChainOfResponsibility\\": "ChainOfResponsibility/",
+      "app\\": "app/"
     }
   },
   "minimum-stability": "dev",

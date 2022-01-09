@@ -4,27 +4,20 @@ declare(strict_types=1);
 
 namespace State\States;
 
-use State\Entities\BookingEntity;
-use State\Interfaces\BookingStateContext;
+use State\Interfaces\BookingContext;
+use State\Interfaces\BookingState;
 
-abstract class AbstractBookingState
+abstract class AbstractBookingState implements BookingState
 {
-    protected BookingStateContext $context;
-    protected string $operationLog = '';
+    protected BookingContext $context;
+    protected ?int $status;
 
-    abstract public function updateEntity(BookingEntity $entity): void;
-
-    protected function addOperationLog(string $message): void
+    public function __construct(BookingContext $context)
     {
-        $this->operationLog .= "\n" . $message;
+        $this->setContext($context);
     }
 
-    public function showLog(): void
-    {
-        echo $this->operationLog;
-    }
-
-    public function setContext(BookingStateContext $context): void
+    public function setContext(BookingContext $context): void
     {
         $this->context = $context;
     }

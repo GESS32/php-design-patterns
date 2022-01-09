@@ -4,15 +4,34 @@ declare(strict_types=1);
 
 namespace State\States;
 
-use State\Entities\BookingEntity;
+use app\Response;
 use State\Enums\BookingStatusEnum;
 
 final class BookingFailed extends AbstractBookingState
 {
-    public function updateEntity(BookingEntity $entity): void
+    public function rollbackStatus(): Response
     {
-        $entity->status = BookingStatusEnum::FAILED;
+        $pendingState = new BookingPendingForPayment($this->context);
 
-        $this->addOperationLog('Status changed to FAILED');
+        $this->context->transitionStateTo($pendingState);
+
+        // TODO: Implement rollbackStatus() method.
+    }
+
+    public function prepareRefundRequest(): Response
+    {
+        // TODO: Implement prepareRefundRequest() method.
+    }
+
+    public function preparePayRequest(): Response
+    {
+        $this->rollbackStatus();
+
+        return $this->context->getPayRoute();
+    }
+
+    protected function getStatusValue(): int
+    {
+        return BookingStatusEnum::FAILED;
     }
 }

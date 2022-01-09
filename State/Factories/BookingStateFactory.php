@@ -5,23 +5,30 @@ declare(strict_types=1);
 namespace State\Factories;
 
 use LogicException;
-use State\Enums\BookingStatusEnum;
-use State\States\AbstractBookingState;
+use State\EnumObjects\BookingStatus;
+use State\Interfaces\BookingState;
+use State\Mappings\BookingStatusStateMapping;
 
 final class BookingStateFactory
 {
-    public static function make(BookingStatusEnum $enum): AbstractBookingState
+    /**
+     * @param BookingStatus $status
+     * @param BookingStatusStateMapping $mapping
+     * @return BookingState
+     *@throws LogicException
+     */
+    public static function make(BookingStatus $status, BookingStatusStateMapping $mapping): BookingState
     {
-        $class = $enum->getStateClass();
+        $stateClass = $mapping->getStateClassByStatus($status->getValue());
 
-        if (class_exists($class)) {
-            $object = new $class();
+        if (class_exists($stateClass)) {
+            $object = new $stateClass();
         } else {
-            throw new LogicException('Class "' . $class . '" does not exist');
+            throw new LogicException('Class "' . $stateClass . '" does not exist');
         }
 
-        if (!$object instanceof AbstractBookingState) {
-            throw new LogicException('The "' . $class . '" should be instance of ' . AbstractBookingState::class);
+        if (!$object instanceof BookingState) {
+            throw new LogicException('The "' . $stateClass . '" should implement the ' . BookingState::class);
         }
 
         return $object;

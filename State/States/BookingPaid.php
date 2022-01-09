@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace State\States;
 
-use State\Entities\BookingEntity;
+use app\Response;
 use State\Enums\BookingStatusEnum;
 
 final class BookingPaid extends AbstractBookingState
 {
-    public function updateEntity(BookingEntity $entity): void
+    public function rollbackStatus(): Response
     {
-        if ($entity->hasTransaction) {
-            $entity->status = BookingStatusEnum::PAID;
+        // TODO: Implement rollbackStatus() method.
+    }
 
-            $this->addOperationLog('Paid successful');
-        } elseif (isYourDay()) {
-            $failedState = new BookingFailed();
-            $failedState->addOperationLog('Paid failed.');
-            $failedState->updateEntity($entity);
+    public function prepareRefundRequest(): Response
+    {
+        // TODO: Implement prepareRefundRequest() method.
+    }
 
-            $this->context->transitionTo($failedState);
-        } else {
-            $pendingState = new BookingPending();
-            $pendingState->addOperationLog('Paid failed, but booking time has not out.');
-            $pendingState->updateEntity($entity);
+    public function preparePayRequest(): Response
+    {
+        // TODO: Implement preparePayRequest() method.
+    }
 
-            $this->context->transitionTo($pendingState);
-        }
+    protected function getStatusValue(): int
+    {
+        return BookingStatusEnum::PAID;
     }
 }

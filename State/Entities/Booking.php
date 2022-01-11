@@ -30,14 +30,19 @@ final class Booking implements BookingContext
         $this->state = $state;
     }
 
+    public function cancelOperation(): Response
+    {
+        return $this->state->previousState();
+    }
+
     public function getRefundRoute(): Response
     {
-        // TODO: Implement getRefundRoute() method.
+        return $this->state->prepareRefundRequest();
     }
 
     public function getPayRoute(): Response
     {
-        // TODO: Implement getPayRoute() method.
+        return $this->state->preparePayRequest();
     }
 
     public function setCustomerName(string $name): void

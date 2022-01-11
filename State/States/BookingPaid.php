@@ -9,7 +9,7 @@ use State\Enums\BookingStatusEnum;
 
 final class BookingPaid extends AbstractBookingState
 {
-    public function rollbackStatus(): Response
+    public function previousState(): Response
     {
         // TODO: Implement rollbackStatus() method.
     }

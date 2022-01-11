@@ -9,7 +9,7 @@ use State\Enums\BookingStatusEnum;
 
 final class BookingFailed extends AbstractBookingState
 {
-    public function rollbackStatus(): Response
+    public function previousState(): Response
     {
         $pendingState = new BookingPendingForPayment($this->context);
 
@@ -25,7 +25,7 @@ final class BookingFailed extends AbstractBookingState
 
     public function preparePayRequest(): Response
     {
-        $this->rollbackStatus();
+        $this->previousState();
 
         return $this->context->getPayRoute();
     }

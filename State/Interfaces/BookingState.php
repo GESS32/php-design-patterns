@@ -8,7 +8,7 @@ use app\Response;
 
 interface BookingState
 {
-    public function rollbackStatus(): Response;
+    public function previousState(): Response;
 
     public function prepareRefundRequest(): Response;
 

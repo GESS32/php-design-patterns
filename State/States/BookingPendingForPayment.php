@@ -9,7 +9,7 @@ use State\Enums\BookingStatusEnum;
 
 final class BookingPendingForPayment extends AbstractBookingState
 {
-    public function rollbackStatus(): Response
+    public function previousState(): Response
     {
         $pendingState = new BookingClosed($this->context);
 

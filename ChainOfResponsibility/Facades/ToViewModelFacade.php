@@ -14,6 +14,7 @@ use ChainOfResponsibility\ViewModels\UserViewModel;
 class ToViewModelFacade
 {
     protected ToViewModelHandler $handler;
+
     protected array $chainMap = [
         isViewModel::class => EntityToViewModel::class,
         EntityToViewModel::class => ObjectToViewModel::class,
